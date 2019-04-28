@@ -40,3 +40,11 @@ Vue2+element UI用到<style lang="scss">
 npm install sass-loader -D
 npm install node-sass -D
 ```
+
+包介绍
+
+```
+nprogress  // 进度条
+svg-sprite-loader  // svg图标制作
+svgo
+```

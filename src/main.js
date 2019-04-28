@@ -9,6 +9,8 @@ import App from './App'
 import router from './router'
 
 import i18n from './lang'
+import './icons' // icon
+import './permission' // permission control
 
 Vue.use(Element, {
   size: 'medium',

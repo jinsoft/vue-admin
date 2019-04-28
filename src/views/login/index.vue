@@ -8,6 +8,7 @@
         </div>
         <el-form-item prop="username">
             <span class="svg-container">
+              <svg-icon icon-class="user" />
             </span>
             <el-input
               v-model="loginForm.username"
@@ -19,6 +20,7 @@
         </el-form-item>
         <el-form-item prop="password">
             <span class="svg-container">
+              <svg-icon icon-class="password" />
             </span>
             <el-input
               v-model="loginForm.password"
@@ -27,6 +29,9 @@
               type="password"
               auto-complete="on"
             />
+            <span class="show-pwd" @click="showPwd">
+              <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
+            </span>
         </el-form-item>
         <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;">
             {{ $t('login.logIn') }}
@@ -43,7 +48,9 @@ export default {
       loginForm: {
         username: "admin",
         password: "123456"
-      }
+      },
+      loading: false,
+      showDialog: false
     };
   }
 };
