@@ -4,7 +4,7 @@ export default {
         introduction: '简述'
     },
     login: {
-        title: '系统登录',
+        title: '后台管理系统登录',
         logIn: '登录',
         username: '账号',
         password: '密码'
