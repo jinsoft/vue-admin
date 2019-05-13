@@ -1,10 +1,23 @@
+'use strict'
 const path = require('path')
+const defaultSettings = require('./src/settings.js')
 
 function resolve(dir) {
     return path.join(__dirname, dir)
-  }
+}
+
+const name = defaultSettings.title || 'vue admin'
 
 module.exports = {
+    lintOnSave: process.env.NODE_ENV === 'development',
+    configureWebpack:{
+        name:name,
+        resolve:{
+            alias:{
+                '@':resolve('src')
+            }
+        }
+    },
     chainWebpack: config => {
         // set svg-sprite-loader
         config.module

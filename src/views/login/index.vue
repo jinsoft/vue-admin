@@ -67,8 +67,8 @@ export default {
         password: "123456"
       },
       loginRules: {
-        username: [{ required: true, trigger: 'blur', Validator:validateUsername }],
-        password:[{ required: true, trigger: 'blur', Validator:validatePassword }]
+        username: [{ required: true, trigger: 'blur', validator:validateUsername }],
+        password:[{ required: true, trigger: 'blur', validator:validatePassword }]
       },
       loading: false,
       showDialog: false,
