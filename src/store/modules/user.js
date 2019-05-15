@@ -5,3 +5,5 @@ const actions = {
         window.console.log(userInfo)
     }
 }
+
+export default actions
