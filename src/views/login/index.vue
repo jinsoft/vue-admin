@@ -49,7 +49,7 @@ export default {
   data() {
     const validateUsername = (rule, value, callback) =>{
       if(!validEmail(value)){
-        callback(new Error('sssss'))
+        callback(new Error('Please enter the correct user name'))
       }else{
         callback()
       }
@@ -63,7 +63,7 @@ export default {
     }
     return {
       loginForm: {
-        username: "admin",
+        username: "admin@ainiok.com",
         password: "123456"
       },
       loginRules: {

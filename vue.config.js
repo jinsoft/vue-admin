@@ -9,6 +9,7 @@ function resolve(dir) {
 const name = defaultSettings.title || 'vue admin'
 
 module.exports = {
+    publicPath:'https://account.ainiok.com/',
     lintOnSave: process.env.NODE_ENV === 'development',
     configureWebpack:{
         name:name,
