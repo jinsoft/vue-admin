@@ -1,11 +1,11 @@
 import { login, logout, getInfo } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
-import router from '@/router'
+// import router from '@/router'
 
 const state = {
     token: getToken(),
     name: '',
-    avatar: ''
+    avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif'
 }
 
 const mutations = {
@@ -27,8 +27,10 @@ const actions = {
             login({ username: username.trim(), password: password })
                 .then(response => {
                     const { data } = response
-                    commit('SET_TOKEN', data.token)
-                    setToken(data.token)
+                    window.console.log(data)
+                    var token = 'adsfsdfasdg1231234'
+                    commit('SET_TOKEN', token)
+                    setToken(token)
                     resolve()
                 }).catch(error => {
                     reject(error)

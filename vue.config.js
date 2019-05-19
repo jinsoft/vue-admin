@@ -8,14 +8,32 @@ function resolve(dir) {
 
 const name = defaultSettings.title || 'vue admin'
 
+// const port = 80
+
 module.exports = {
-    publicPath:'https://account.ainiok.com/',
     lintOnSave: process.env.NODE_ENV === 'development',
-    configureWebpack:{
-        name:name,
-        resolve:{
-            alias:{
-                '@':resolve('src')
+    devServer: {
+        // port: port,
+        open: true,
+        overlay: {
+            warnings: false,
+            errors: true
+        },
+        proxy: {
+            ['/proxy']: {
+                target: `https://account.ainiok.com`,
+                changeOrigin: true,
+                pathRewrite: {
+                    ['^' + '/proxy']: ''
+                }
+            }
+        }
+    },
+    configureWebpack: {
+        name: name,
+        resolve: {
+            alias: {
+                '@': resolve('src')
             }
         }
     },

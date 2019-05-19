@@ -47,4 +47,6 @@ npm install node-sass -D
 nprogress  // 进度条
 svg-sprite-loader  // svg图标制作
 svgo
+vue-count-to // 数字滚动插件
+screenfull   // 全屏解决方案
 ```

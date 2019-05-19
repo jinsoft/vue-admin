@@ -4,7 +4,7 @@ import store from '@/store'
 import { getToken } from '@/utils/auth'
 
 const service = axios.create({
-    baseURL: '/',
+    baseURL: '/proxy',  // 这里和vue.config.js 中的proxy一致
     withCredentials: true,
     timeout: 50000
 })

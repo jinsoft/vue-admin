@@ -64,7 +64,7 @@ export default {
     return {
       loginForm: {
         username: "admin@ainiok.com",
-        password: "123456"
+        password: "123321"
       },
       loginRules: {
         username: [{ required: true, trigger: 'blur', validator:validateUsername }],
