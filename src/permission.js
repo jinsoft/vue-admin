@@ -4,10 +4,15 @@ import store from './store'
 import { getToken } from '@/utils/auth'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
+import { Message } from 'element-ui';
 
-const whiteList = ['/login', 'auth-redirect'] // 白名单
+const whiteList = ['/login', 'auth-redirect','/admin/login'] // 白名单
 
 router.beforeEach(async(to, from, next) => {
+
+    NProgress.start()
+
+    // document.title = getPageTitle(to.meta.title)
 
     const hasToken = getToken()
 
@@ -19,14 +24,26 @@ router.beforeEach(async(to, from, next) => {
             next({ path: '/admin' })
             NProgress.done()
         }else{
-            // const hasRole = store.getters.roles && store.getters.roles.length > 0
-            const accessRoutes = await store.dispatch('permission/generateRoutes', ['admin']);
+            const hasRole = store.getters.roles && store.getters.roles.length > 0
 
-            router.addRoutes(accessRoutes)
+            if(hasRole){
+                window.console.log('1111')
+                next(...to)
+            }else{
+                window.console.log(to)
+                try{
+                    const { roles }  = await store.dispatch('user/getInfo');
 
-            next()
-            NProgress.done()
-            
+                    const accessRoutes = await store.dispatch('permission/generateRoutes', roles );
+
+                    router.addRoutes(accessRoutes)
+                    next({ })
+                }catch(error){
+                    Message.error(error || 'Error')
+                    next('/login')
+                    NProgress.done()
+                }
+            }            
         }
     } else {
         if (whiteList.indexOf(to.path) !== -1) {

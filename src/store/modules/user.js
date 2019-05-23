@@ -9,6 +9,9 @@ const state = {
 }
 
 const mutations = {
+    SET_ROLES:(state,roles) =>{
+        state.roles = roles
+    },
     SET_TOKEN: (state, token) => {
         state.token = token
     },
@@ -35,6 +38,28 @@ const actions = {
                 }).catch(error => {
                     reject(error)
                 })
+        })
+    },
+    
+    // get user info
+    getInfo({ commit, state }){
+        return new Promise((resolve, reject)=>{
+            getInfo(state.token).then(response =>{
+                const { data } = response
+
+                if(!data){
+                    reject('failed 11111');
+                }
+
+                const { roles,name,avatar } = data
+
+                commit('SET_ROLES', roles)
+                commit('SET_NAME', name)
+                commit('SET_AVATAR',avatar)
+                resolve(data)
+            }).catch(error=>{
+                reject(error)
+            })
         })
     }
 }

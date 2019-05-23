@@ -7,7 +7,7 @@ module.exports = {
 
     fixedHeader: false,
 
-    sidebarLogo: false,
+    sidebarLogo: true,
 
     errorLog: 'production'
 }
