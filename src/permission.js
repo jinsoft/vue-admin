@@ -24,26 +24,26 @@ router.beforeEach(async(to, from, next) => {
             next({ path: '/admin' })
             NProgress.done()
         }else{
-            const hasRole = store.getters.roles && store.getters.roles.length > 0
+            next()
+            // const hasRole = store.getters.roles && store.getters.roles.length > 0
 
-            if(hasRole){
-                window.console.log('1111')
-                next(...to)
-            }else{
-                window.console.log(to)
-                try{
-                    const { roles }  = await store.dispatch('user/getInfo');
+            // if(hasRole){
+            //     next()
+            // }else{
+            //     window.console.log(to.path)
+            //     try{
+            //         const { roles }  = await store.dispatch('user/getInfo');
 
-                    const accessRoutes = await store.dispatch('permission/generateRoutes', roles );
+            //         const accessRoutes = await store.dispatch('permission/generateRoutes', roles );
 
-                    router.addRoutes(accessRoutes)
-                    next({ })
-                }catch(error){
-                    Message.error(error || 'Error')
-                    next('/login')
-                    NProgress.done()
-                }
-            }            
+            //         router.addRoutes(accessRoutes)
+            //         next()
+            //     }catch(error){
+            //         Message.error(error || 'Error')
+            //         next('/login')
+            //         NProgress.done()
+            //     }
+            // }            
         }
     } else {
         if (whiteList.indexOf(to.path) !== -1) {

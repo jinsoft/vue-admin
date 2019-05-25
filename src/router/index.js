@@ -30,17 +30,31 @@ export const constantRoutes = [
         path: 'dashboard',
         component: () => import('@/views/dashboard/index'),
         name: 'Dashboard',
-        meta: { title: 'Dashboard', icon: 'dashboard', affix: true }
+        meta: { title: '控制台', icon: 'dashboard', affix: true }
       }
     ]
-  }
-]
-
-/**
- * asyncRoutes
- * the routes that need to be dynamically loaded based on user roles
- */
-export const asyncRoutes = [
+  },
+  {
+    path:'/settings',
+    component: Layout,
+    redirect:'/settings/system',
+    alwaysShow: true,
+    name:'settings',
+    meta:{
+      title: '设置',
+      icon: 'settings'
+    },
+    children:[
+      {
+        path:'system',
+        component: () => import('@/views/settings/system/index'),
+        name:'系统设置',
+        meta:{
+          title: '系统设置'
+        }
+      }
+    ]
+  },
   {
     path: 'github',
     component: Layout,
@@ -50,12 +64,8 @@ export const asyncRoutes = [
         meta: { title: 'github', icon: 'link' }
       }
     ]
-  },
-
-  // 404 page must be placed at the end !!!
-  { path: '*', redirect: '/404', hidden: true }
+  }
 ]
-
 
 const createRouter = () => new Router({
   scrollBehavior: () => ({ y: 0 }),

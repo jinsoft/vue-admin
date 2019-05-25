@@ -1,6 +1,6 @@
 export default {
     route:{
-        dashboard: '首页',
+        dashboard: '控制台',
         introduction: '简述'
     },
     login: {
@@ -8,5 +8,5 @@ export default {
         logIn: '登录',
         username: '账号',
         password: '密码'
-    }
+    },
 }

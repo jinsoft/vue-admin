@@ -29,12 +29,12 @@ import path from 'path'
 import { isExternal } from '@/utils/validate'
 import Item from './Item'
 import AppLink from './Link'
-import FixiOS from './FixIOS'
+import FixIOS from './FixIOS'
 
 export default {
   name: 'SidebarItem',
   components: { Item, AppLink },
-  mixins: [FixiOS],
+  mixins: [FixIOS],
   props: {
     // route object
     item: {
@@ -51,8 +51,6 @@ export default {
     }
   },
   data() {
-    // To fix https://github.com/PanJiaChen/vue-admin-template/issues/237
-    // TODO: refactor with render function
     this.onlyOneChild = null
     return {}
   },
