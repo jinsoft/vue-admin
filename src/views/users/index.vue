@@ -15,7 +15,7 @@
         style="width: 90px"
         class="filter-item"
       >
-        <el-option v-for="item in importanceOptions" :key="item" :label="item" :value="item"/>
+        <el-option v-for="item in importanceOptions" :key="item" :label="item" :value="item" />
       </el-select>
       <el-select
         v-model="listQuery.type"
@@ -76,17 +76,17 @@
       style="width: 100%;"
       @sort-change="sortChange"
     >
-      <el-table-column label="UID" prop="uid" sortable="custom" align="center">
+      <el-table-column label="UID" prop="uid" min-width="110px">
         <template slot-scope="scope">
           <span>{{ scope.row.uid }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="注册时间" width="150px" align="center">
+      <el-table-column label="手机号" min-width="40px">
         <template slot-scope="scope">
-          <span>{{ scope.row.created_at }}</span>
+          <span>{{ scope.row.phone }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="邮箱" min-width="150px">
+      <el-table-column label="邮箱" min-width="90px">
         <template slot-scope="scope">
           <span>{{ scope.row.email }}</span>
         </template>
@@ -94,6 +94,16 @@
       <el-table-column label="昵称" width="110px" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.name }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="注册时间" width="180px" align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.created_at }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="最后登录时间" width="180px" align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.last_login }}</span>
         </template>
       </el-table-column>
       <!-- <el-table-column v-if="showReviewer" label="Reviewer" width="110px" align="center">
@@ -120,16 +130,37 @@
         </template>
       </el-table-column>-->
       <el-table-column
-        label="Actions"
+        label="操作"
         align="center"
-        width="230"
         class-name="small-padding fixed-width"
+        width="160px"
       >
         <template slot-scope="{row}">
-          <el-button type="primary" size="mini">Edit</el-button>
+          <!-- <el-col :span="12"> -->
+            <el-dropdown trigger="click">
+              <span class="el-dropdown-link">操作
+                <i class="el-icon-arrow-down el-icon--right"></i>
+              </span>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item>
+                  <el-button type="primary" size="mini">编辑</el-button>
+                </el-dropdown-item>
+                <el-dropdown-item>
+                  <el-button v-if="row.status!='published'" size="mini" type="success">Publish</el-button>
+                </el-dropdown-item>
+                <el-dropdown-item>
+                  <el-button v-if="row.status!='draft'" size="mini">Draft</el-button>
+                </el-dropdown-item>
+                <el-dropdown-item>
+                  <el-button v-if="row.status!='deleted'" size="mini" type="danger">删除</el-button>
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+          <!-- </el-col> -->
+          <!-- <el-button type="primary" size="mini">编辑</el-button>
           <el-button v-if="row.status!='published'" size="mini" type="success">Publish</el-button>
           <el-button v-if="row.status!='draft'" size="mini">Draft</el-button>
-          <el-button v-if="row.status!='deleted'" size="mini" type="danger">Delete</el-button>
+          <el-button v-if="row.status!='deleted'" size="mini" type="danger">删除</el-button>-->
         </template>
       </el-table-column>
     </el-table>
@@ -137,7 +168,7 @@
     <pagination
       v-show="total>0"
       :total="total"
-      :page.sync="listQuery.pageNumber"
+      :page.sync="listQuery.page"
       :limit.sync="listQuery.limit"
       @pagination="getList"
     />
@@ -190,7 +221,7 @@
 </template>
 
 <script>
-import { userList, updateUser } from "@/api/admin/user";
+import { userList } from "@/api/admin/user";
 import waves from "@/directive/waves"; // waves directive
 import { parseTime } from "@/utils";
 import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
@@ -248,12 +279,12 @@ export default {
       total: 0,
       listLoading: true,
       listQuery: {
-        pageNumber: 1,
-        pageSize: 15,
+        page: 1,
+        perpage: 15,
         importance: undefined,
         keyword: undefined,
         type: undefined,
-        sort: "created_ats"
+        sort: "created_at"
       },
       importanceOptions: [1, 2, 3],
       calendarTypeOptions,
@@ -320,8 +351,7 @@ export default {
     getList() {
       this.listLoading = true;
       userList(this.listQuery).then(response => {
-        window.console.log(response);
-        if (response.code !== 200) {
+        if (response.code == 200) {
           this.listLoading = false;
           this.list = response.data;
           this.total = response.total;
@@ -331,7 +361,7 @@ export default {
       });
     },
     handleFilter() {
-      this.listQuery.pageNumber = 1;
+      this.listQuery.page = 1;
       this.getList();
     },
     handleModifyStatus(row, status) {
@@ -374,24 +404,24 @@ export default {
         this.$refs["dataForm"].clearValidate();
       });
     },
-    createData() {
-      this.$refs["dataForm"].validate(valid => {
-        if (valid) {
-          this.temp.id = parseInt(Math.random() * 100) + 1024; // mock a id
-          this.temp.author = "vue-element-admin";
-          createArticle(this.temp).then(() => {
-            this.list.unshift(this.temp);
-            this.dialogFormVisible = false;
-            this.$notify({
-              title: "Success",
-              message: "Created Successfully",
-              type: "success",
-              duration: 2000
-            });
-          });
-        }
-      });
-    },
+    // createData() {
+    //   this.$refs["dataForm"].validate(valid => {
+    //     if (valid) {
+    //       this.temp.id = parseInt(Math.random() * 100) + 1024; // mock a id
+    //       this.temp.author = "vue-element-admin";
+    //       createArticle(this.temp).then(() => {
+    //         this.list.unshift(this.temp);
+    //         this.dialogFormVisible = false;
+    //         this.$notify({
+    //           title: "Success",
+    //           message: "Created Successfully",
+    //           type: "success",
+    //           duration: 2000
+    //         });
+    //       });
+    //     }
+    //   });
+    // },
     handleUpdate(row) {
       this.temp = Object.assign({}, row); // copy obj
       this.temp.timestamp = new Date(this.temp.timestamp);
@@ -401,30 +431,30 @@ export default {
         this.$refs["dataForm"].clearValidate();
       });
     },
-    updateData() {
-      this.$refs["dataForm"].validate(valid => {
-        if (valid) {
-          const tempData = Object.assign({}, this.temp);
-          tempData.timestamp = +new Date(tempData.timestamp); // change Thu Nov 30 2017 16:41:05 GMT+0800 (CST) to 1512031311464
-          updateArticle(tempData).then(() => {
-            for (const v of this.list) {
-              if (v.id === this.temp.id) {
-                const index = this.list.indexOf(v);
-                this.list.splice(index, 1, this.temp);
-                break;
-              }
-            }
-            this.dialogFormVisible = false;
-            this.$notify({
-              title: "Success",
-              message: "Update Successfully",
-              type: "success",
-              duration: 2000
-            });
-          });
-        }
-      });
-    },
+    // updateData() {
+    //   this.$refs["dataForm"].validate(valid => {
+    //     if (valid) {
+    //       const tempData = Object.assign({}, this.temp);
+    //       tempData.timestamp = +new Date(tempData.timestamp); // change Thu Nov 30 2017 16:41:05 GMT+0800 (CST) to 1512031311464
+    //       updateArticle(tempData).then(() => {
+    //         for (const v of this.list) {
+    //           if (v.id === this.temp.id) {
+    //             const index = this.list.indexOf(v);
+    //             this.list.splice(index, 1, this.temp);
+    //             break;
+    //           }
+    //         }
+    //         this.dialogFormVisible = false;
+    //         this.$notify({
+    //           title: "Success",
+    //           message: "Update Successfully",
+    //           type: "success",
+    //           duration: 2000
+    //         });
+    //       });
+    //     }
+    //   });
+    // },
     handleDelete(row) {
       this.$notify({
         title: "Success",
@@ -435,12 +465,12 @@ export default {
       const index = this.list.indexOf(row);
       this.list.splice(index, 1);
     },
-    handleFetchPv(pv) {
-      fetchPv(pv).then(response => {
-        this.pvData = response.data.pvData;
-        this.dialogPvVisible = true;
-      });
-    },
+    // handleFetchPv(pv) {
+    //   fetchPv(pv).then(response => {
+    //     this.pvData = response.data.pvData;
+    //     this.dialogPvVisible = true;
+    //   });
+    // },
     formatJson(filterVal, jsonData) {
       return jsonData.map(v =>
         filterVal.map(j => {

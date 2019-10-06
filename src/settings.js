@@ -1,5 +1,5 @@
 module.exports = {
-    title: 'admin',
+    title: '用户后台管理',
 
     showSettings: true,
 

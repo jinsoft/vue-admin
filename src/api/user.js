@@ -1,6 +1,7 @@
 import request from '@/utils/request'
 
 export function login(data) {
+    window.console.log('requets')
     return request({
         url: '/admin/login',
         method: 'post',

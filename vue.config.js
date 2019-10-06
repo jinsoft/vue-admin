@@ -6,7 +6,7 @@ function resolve(dir) {
     return path.join(__dirname, dir)
 }
 
-const name = defaultSettings.title || 'vue admin'
+const name = defaultSettings.title || '用户后台管理'
 
 // const port = 80
 

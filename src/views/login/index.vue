@@ -6,14 +6,14 @@
                 {{ $t('login.title') }}
             </h3>
         </div>
-        <el-form-item prop="username">
+        <el-form-item prop="email">
             <span class="svg-container">
-              <svg-icon icon-class="user" />
+              <svg-icon icon-class="users" />
             </span>
             <el-input
-              v-model="loginForm.username"
+              v-model="loginForm.email"
               :placeholder="$t('login.username')"
-              name="username"
+              name="email"
               type="text"
               auto-complete="on"
             />
@@ -63,11 +63,11 @@ export default {
     }
     return {
       loginForm: {
-        username: "admin@ainiok.com",
+        email: "admin@ainiok.com",
         password: "123321"
       },
       loginRules: {
-        username: [{ required: true, trigger: 'blur', validator:validateUsername }],
+        email: [{ required: true, trigger: 'blur', validator:validateUsername }],
         password:[{ required: true, trigger: 'blur', validator:validatePassword }]
       },
       loading: false,
